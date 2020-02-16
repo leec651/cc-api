@@ -32,6 +32,7 @@ PersonSchema = new Schema(
     enum: LANGUAGE
     default: 'ENG'
   address: Address
+  image: String
   phone:
     type: String
     set: (v) -> _.replace(v, /-/g, '')
@@ -58,7 +59,14 @@ PersonSchema.methods =
     delete person.__v
     return person
 
-PersonSchema.index { email: 1 }
+PersonSchema.index {email: 1, deletedAt: -1}
+PersonSchema.index {dateOfBirth: 1, deletedAt: -1}
+PersonSchema.index {sex: 1, deletedAt: -1}
+PersonSchema.index {ethnicity: 1, deletedAt: -1}
+PersonSchema.index {language: 1, deletedAt: -1}
+PersonSchema.index {phone: 1, deletedAt: -1}
+
+
 ###
 db.people.createIndex(
   { firstName: "text", lastName: "text", email: "text" },

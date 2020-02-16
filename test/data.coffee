@@ -1,7 +1,7 @@
 module.exports =
   policyIds: ["PB0", "PB1", "PB2", "PB3", "PB4", "PB5", "PB6", "PB7", "PB8", "PB9"]
   people: [
-    ethnicity: "ASIAN"
+    ethnicity: "YELLOW"
     language: "ENG"
     firstName: "Emma"
     lastName: "Lin"
@@ -9,7 +9,7 @@ module.exports =
     dateOfBirth: new Date("1989-12-21")
     sex: "FEMALE"
   ,
-    ethnicity: "ASIAN"
+    ethnicity: "YELLOW"
     language: "ENG"
     firstName: "Chen Wei"
     lastName: "Lee"
@@ -161,7 +161,7 @@ module.exports =
     dateOfBirth: new Date("1980-2-11")
     sex: 'MALE'
   ,
-    ethnicity: 'ASIAN'
+    ethnicity: 'YELLOW'
     language: 'ENG'
     firstName: 'Tom'
     lastName: 'Haverford'

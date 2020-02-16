@@ -72,6 +72,10 @@ ContractSchema.methods =
     delete contract._id
     return contract
 
-ContractSchema.index {'insurees.personId': 1}
+ContractSchema.index {'insurees.personId': 1, deletedAt: -1}
+ContractSchema.index {'policyId': 1, deletedAt: -1}
+ContractSchema.index {'source': 1, deletedAt: -1}
+ContractSchema.index {'passive_renewal': 1, deletedAt: -1}
+
 
 module.exports = ContractSchema

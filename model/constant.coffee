@@ -146,15 +146,27 @@ module.exports =
     'UNKNOWN'
   ]
   ETHNICITY: [
-    'AMERICAN INDIAN OR ALASKA NATIVE'
-    'ASIAN'
+    'YELLOW'
+    'BROWN'
     'HISPANIC'
-    'BLACK OR AFRICAN AMERICAN'
-    'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER'
+    'BLACK'
     'WHITE'
     'UNKNOWN'
   ]
   LANGUAGE: [
     'ENG'
     'SPA'
+  ]
+  IMAGES: [
+    'daniel.jpg'
+    'elliot.jpg'
+    'elyse.png'
+    'helen.jpg'
+    'jenny.jpg'
+    'kristy.png'
+    'matthew.png'
+    'molly.png'
+    'steve.jpg'
+    'stevie.jpg'
+    'veronika.jpg'
   ]

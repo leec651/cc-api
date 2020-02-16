@@ -16,8 +16,8 @@ module.exports = (app) ->
     console.log 'search for', text
     Person.find { $text: { $search: text } }, (err, dbPeople) ->
       return res.sendStatus log(err) if err
-      console.log dbPeople
-      return res.sendStatus(200)
+      dbPeople = dbPeople.map (person) -> person.toJson()
+      return res.json dbPeople
 
   app.post '/person', validate({
     firstName:  { required: true, type: String }
