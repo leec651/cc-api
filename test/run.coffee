@@ -13,7 +13,10 @@ createPeople = (cb) ->
   async.eachLimit data.people, 2, (person, eCb) ->
     Person.countDocuments {email: person.email}, (err, count) ->
       return eCb err if err
-      return eCb() if count
+      if count
+        console.log "#{person.email} existed. continue.."
+        return eCb()
+      person = new Person(person)
       person.save (err, saved) ->
         totalSaved++
         return eCb(err)
@@ -31,7 +34,7 @@ randomPeople = (people, number) ->
   return result
 
 createContracts = (cb) ->
-  number = 5
+  number = 20
   console.log "Created #{number} contract(s)"
   Person.find {}, (err, dbPeople) ->
     async.times number, (n, tCb) ->

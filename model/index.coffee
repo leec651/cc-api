@@ -1,7 +1,6 @@
 mongoose = require 'mongoose'
 
 mongo =
-  # server: 'mongodb://localhost:27017/my_database'
   server: 'mongodb://localhost:27017/test'
   options:
     useUnifiedTopology: true

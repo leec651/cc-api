@@ -2,18 +2,29 @@ _ = require 'lodash'
 async = require 'async'
 
 {validate, format} = require '../util/middleware'
+{log} = require '../util'
 {Contract, Eligibility} = require '../model'
 
 module.exports = (app) ->
 
+  # used for testing
+  app.get '/contract/random', (req, res) ->
+    Contract.aggregate [ { $sample: { size: 1 } } ], (err, dbContracts) ->
+      return res.sendStatus log(err) if err
+      return res.sendStatus 404 if _.isEmpty dbContracts
+      # need to convert it back to Contract obj in order to use toJson()
+      contract = new Contract dbContracts[0]
+      return res.json contract.toJson()
+
   app.get '/contract/:id', (req, res) ->
     Contract.findById req.params.id, (err, dbContract) ->
-      return res.sendStatus 500 if err
+      return res.sendStatus log(err) if err
+      return res.sendStatus 404 if not dbContract
       return res.json dbContract.toJson()
 
   app.get '/contract/person/:personId', (req, res) ->
     Contract.find {'insurees.personId': req.params.personId}, (err, contracts) ->
-      return res.sendStatus 500 if err
+      return res.sendStatus log(err) if err
       return res.json(_.map contracts, (contract) -> contract.toJson())
 
   app.post '/contract', validate({
@@ -51,7 +62,7 @@ module.exports = (app) ->
     contract.save (err, dbContract) ->
       console.log 'err', err
       return res.sendStatus 409 if err and err.code == 11000
-      return res.sendStatus 500 if err
+      return res.sendStatus log(err) if err
       return res.sendStatus 404 if not dbContract
       return res.json dbContract.toJson()
 
@@ -60,7 +71,7 @@ module.exports = (app) ->
     insurees: { type: Array,  required: true }
   }), (req, res) ->
     Contract.findById req.params.contractId, (err, dbContract) ->
-      return res.sendStatus(500) if err
+      return res.sendStatus log(err) if err
       return res.sendStatus(404) if not dbContract
       # probably should move this to save
       keyedInsurees = _.keyBy dbContract.insurees, (insuree) -> insuree.personId
@@ -81,14 +92,14 @@ module.exports = (app) ->
 
       dbContract.save (err, updatedContract) ->
         console.log err
-        return res.sendStatus 500 if err
+        return res.sendStatus log(err) if err
         return res.send updatedContract.toJson()
 
 
   app.post '/contract/:contractId/remove/:personId', (req, res) ->
     {contractId, personId} = req.params
     Contract.findById contractId, (err, contract) ->
-      return res.sendStatus(500) if err
+      return res.sendStatus log(err) if err
       return res.sendStatus(404) if not contract
       keyedInsurees = _.keyBy contract.insurees, (insuree) -> insuree.personId
       insuree = keyedInsurees[personId]
@@ -106,6 +117,6 @@ module.exports = (app) ->
       _.remove contract.insurees, (insuree) -> insuree.personId.toString() == personId
       contract.markModified 'insurees'
       contract.save (err, updatedContract) ->
-        return res.sendStatus 500 if err
+        return res.sendStatus log(err) if err
         console.log updatedContract
         return res.send updatedContract.toJson()

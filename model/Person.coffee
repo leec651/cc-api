@@ -58,6 +58,17 @@ PersonSchema.methods =
     delete person.__v
     return person
 
-PersonSchema.index {'email': 1}
+PersonSchema.index { email: 1 }
+###
+db.people.createIndex(
+  { firstName: "text", lastName: "text", email: "text" },
+  { name: "users_full_text", default_language: "en", language_override: "en" }
+)
+###
+PersonSchema.index(
+  { firstName: "text", lastName: "text", email: "text" },
+  { name: "users_full_text", default_language: "en", language_override: "en" }
+)
+
 
 module.exports = PersonSchema

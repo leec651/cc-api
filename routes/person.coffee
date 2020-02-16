@@ -1,13 +1,23 @@
 {validate, format} = require '../util/middleware'
+{log} = require '../util'
 {Person} = require '../model'
+
 
 module.exports = (app) ->
 
-  app.get '/person/:id', (req, res) ->
-    {id} = req.params
-    Person.findById id, (err, dbPerson) ->
-      return res.sendStatus 500
-      return res.json dbPerson
+  app.get '/people/random', (req, res) ->
+    Person.aggregate [ { $sample: { size: 3 } } ], (err, dbPeople) ->
+      return res.sendStatus log(err) if err
+      return res.sendStatus 404 if not dbPeople
+      return res.json dbPeople.map((person) -> new Person(person).toJson())
+
+  app.get '/person/search', (req, res) ->
+    { text } = req.query
+    console.log 'search for', text
+    Person.find { $text: { $search: text } }, (err, dbPeople) ->
+      return res.sendStatus log(err) if err
+      console.log dbPeople
+      return res.sendStatus(200)
 
   app.post '/person', validate({
     firstName:  { required: true, type: String }
@@ -21,5 +31,12 @@ module.exports = (app) ->
         if err.code == 11000
           return res.sendStatus 409
         else
-          return res.sendStatus 500
+          return res.sendStatus log(err)
       return res.json dbPerson.toHypermediaObject()
+
+  app.get '/person/:id', (req, res) ->
+    {id} = req.params
+    Person.findById id, (err, dbPerson) ->
+      return res.sendStatus log(err) if err
+      return res.sendStatus 404 if not dbPerson
+      return res.json dbPerson.toJson()
