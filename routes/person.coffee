@@ -1,3 +1,5 @@
+_ = require 'lodash'
+
 {validate, format} = require '../util/middleware'
 {log} = require '../util'
 {Person} = require '../model'
@@ -40,3 +42,21 @@ module.exports = (app) ->
       return res.sendStatus log(err) if err
       return res.sendStatus 404 if not dbPerson
       return res.json dbPerson.toJson()
+
+  app.put '/person/:id', (req, res) ->
+    Person.findById req.params.id, (err, dbPerson) ->
+      return res.sendStatus log(err) if err
+      return res.sendStatus 404 if not dbPerson
+      fields = _.pick req.body, [
+        'sex'
+        'ethnicity'
+        'language'
+        'firstName'
+        'lastName'
+        'dateOfBirth'
+        'phone'
+      ]
+      Object.assign dbPerson, fields
+      dbPerson.save (err, dbPerson) ->
+        return res.sendStatus log(err) if err
+        return res.json dbPerson.toJson()
