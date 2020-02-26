@@ -10,6 +10,6 @@
 - mongod --dbpath /Users/[chen]/data/db
 
 # setup & start your server
-cd ./cc-api
-npm install
-nodemon server.coffee
+- cd ./cc-api
+- npm install
+- nodemon server.coffee
