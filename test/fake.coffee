@@ -102,7 +102,7 @@ createContracts = (number, cb) ->
   , cb
 
 
-NUMBER_PEOPLE   = 5000
+NUMBER_PEOPLE   = 1000
 NUMBER_CONTRACT = 100
 
 async.series [
