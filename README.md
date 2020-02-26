@@ -4,12 +4,12 @@
 - npm install -g coffeescript@2
 - npm install nodemon
 
-# setup & start your db
+# setup & start db
 - brew install mongodb
 - mkdir /Users/[chen]/data/db
 - mongod --dbpath /Users/[chen]/data/db
 
-# setup & start your server
+# setup & start express server
 - cd ./cc-api
 - npm install
 - nodemon server.coffee
