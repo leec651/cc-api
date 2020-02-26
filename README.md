@@ -12,4 +12,7 @@
 # setup & start express server
 - cd ./cc-api
 - npm install
-- nodemon server.coffee
+- npm run dev
+
+# populate test data
+- npm run data
