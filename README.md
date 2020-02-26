@@ -1,8 +1,8 @@
 # setup env
-- node: js runtime environment
-- npm: node package management
-- nodemon: automatically restarting the node application when file changes in the directory are detected
-- coffeescript@2: coffeescript v2 added some ES6 support.
+- node: js runtime env
+- npm: Node package management
+- nodemon: Automatically restart the node application when file changes are detected.
+- coffeescript@2: CoffeeScript is a little language that compiles into JavaScript. ES6 features were added to v2.
 ```shell
 brew install node
 brew install npm
