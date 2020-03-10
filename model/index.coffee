@@ -7,10 +7,16 @@ mongo =
     useCreateIndex: true
     useNewUrlParser: true
 
+mongoose.Promise = global.Promise
+
 # Connect to mongoDB
 mongoose.connect mongo.server, mongo.options
-mongoose.connection.on   'error', (err) -> throw new Error(err) if err
-mongoose.connection.once 'open',  ()    -> console.log "Connected to #{mongo.server}"
+mongoose.connection.on 'error', (err) ->
+  console.error mongo
+  throw new Error(err) if err
+
+mongoose.connection.once 'open', () ->
+  console.log "Connected to #{mongo.server}"
 
 # Exports all db access objects
 modelCache = {}
