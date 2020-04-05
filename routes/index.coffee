@@ -42,3 +42,4 @@ module.exports = (app) ->
 
   require("./person")(app)
   require("./contract")(app)
+  require("./quote")(app)
